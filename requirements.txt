@@ -3,4 +3,7 @@ numpy
 scikit-learn
 pymongo
 ipykernel
+from_root
+dill
+certifi
 -e .

@@ -22,7 +22,7 @@ def configure_logger():
     logger.setLevel(logging.INFO)
 
     formatter = logging.Formatter(
-        "[%(asctime)s] %(levelname)s | %(filename)s | %(funcName)s | %(message)s"
+        "[%(asctime)s] %(levelname)s | %(filename)s | %(message)s"
     )
 
     # Always print logs to console

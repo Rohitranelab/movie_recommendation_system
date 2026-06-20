@@ -218,4 +218,6 @@ __marimo__/
 .streamlit/secrets.toml
 
 
-notebooks/mongodb_connection.ipynb
+notebooks/mongodb_connection.
+/artifact
+/logs

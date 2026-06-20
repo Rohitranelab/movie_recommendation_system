@@ -6,4 +6,5 @@ ipykernel
 from_root
 dill
 certifi
+pyyaml
 -e .

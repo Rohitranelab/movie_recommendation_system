@@ -26,9 +26,17 @@ credits_columns:
   cast: object
   crew: object
 
-required_columns_after_merge:
+required_columns:
   - movie_id
   - title
+  - overview
+  - genres
+  - keywords
+  - cast
+  - crew
+  - vote_average
+
+drop_columns:
   - overview
   - genres
   - keywords

@@ -54,7 +54,7 @@ class DataTransformationConfig:
     transformed_data_dir = os.path.join(data_transformation_dir, DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR)
     transformed_object_dir = os.path.join(data_transformation_dir, DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR)
     movies_file_path = os.path.join(transformed_data_dir, MOVIES_PKL_FILE_NAME)
-    vectorizer_file_path = os.path.join(transformed_object_dir, VECTORIZER_PKL_FILE_NAME)
+    transformed_movie_file_path = os.path.join(transformed_data_dir, "movies_transformed.csv")
 
 
 # =====================================================

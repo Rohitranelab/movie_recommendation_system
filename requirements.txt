@@ -7,4 +7,5 @@ from_root
 dill
 certifi
 pyyaml
+nltk
 -e .

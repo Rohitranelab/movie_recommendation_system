@@ -28,7 +28,6 @@ class DataValidationArtifact:
 @dataclass
 class DataTransformationArtifact:
     transformed_movie_file_path: str
-    vectorizer_file_path: str
 
 
 # ======================================================

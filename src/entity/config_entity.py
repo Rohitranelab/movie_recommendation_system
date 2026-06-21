@@ -67,6 +67,7 @@ class ModelTrainerConfig:
     trained_model_dir = os.path.join(model_trainer_dir, MODEL_TRAINER_TRAINED_MODEL_DIR)
     similarity_model_path = os.path.join(trained_model_dir, SIMILARITY_PKL_FILE_NAME)
     movies_model_path = os.path.join(trained_model_dir, MOVIES_PKL_FILE_NAME)
+    vectorize_model_path = os.path.join(trained_model_dir, VECTORIZER_PKL_FILE_NAME)
 
 
 # =====================================================

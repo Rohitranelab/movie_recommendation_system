@@ -25,7 +25,7 @@ jobs:
 
       - name: Verify Application
         run: |
-          streamlit run app.py
+          python app.py
 
   Continuous-Deployment:
     needs: Continuous-Integration

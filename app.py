@@ -1,45 +1,77 @@
-import streamlit as st
+from fastapi import FastAPI, Form, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from uvicorn import run as app_run
+
+from src.constants import APP_HOST, APP_PORT
 from src.pipeline.prediction_pipeline import PredictionPipeline
+
+app = FastAPI(title="Movie Recommendation System")
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+templates = Jinja2Templates(directory="templates")
 
 predict = PredictionPipeline()
 
-st.set_page_config(page_title="Movie Recommendation System", layout="wide")
-st.title("🎬 Movie Recommendation System")
+genres = [
+    "Action",
+    "Adventure",
+    "Comedy",
+    "Drama",
+    "Fantasy",
+    "Horror",
+    "Romance",
+    "ScienceFiction",
+    "Thriller"
+]
 
-genre = st.selectbox(
-    "Select which type movie you want!",
-    [
-        "Action",
-        "Adventure",
-        "Comedy",
-        "Drama",
-        "Fantasy",
-        "Horror",
-        "Romance",
-        "ScienceFiction",
-        "Thriller"
-    ]
-)
 
-if st.button("Show Movies"):
-    # Get recommended movies
+@app.get("/", response_class=HTMLResponse)
+async def home(request: Request):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={
+            "genres": genres,
+            "movies": [],
+            "selected": None
+        }
+    )
+
+
+@app.post("/", response_class=HTMLResponse)
+async def recommend(request: Request, genre: str = Form(...)):
+
     df = predict.recommend_by_genre(genre, n=10)
-    # First Row
-    cols = st.columns(5)
-    for i in range(5):
-        movie = df.iloc[i]
-        poster = predict.fetch_poster(movie["movie_id"])
-        with cols[i]:
-            st.image(poster, width = 200)
-            st.markdown(f"**{movie['title']}**")
-            st.write(f"⭐ {movie['vote_average']}")
 
-    # Second Row
-    cols = st.columns(5)
-    for i in range(5, 10):
-        movie = df.iloc[i]
-        poster = predict.fetch_poster(movie["movie_id"])
-        with cols[i - 5]:
-            st.image(poster, use_container_width=True)
-            st.markdown(f"**{movie['title']}**")
-            st.write(f"⭐ {movie['vote_average']}")
+    movies = []
+
+    for _, row in df.iterrows():
+
+        movies.append({
+            "title": row["title"],
+            "vote_average": row["vote_average"],
+            "poster": predict.fetch_poster(int(row["movie_id"]))
+        })
+
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={
+            "genres": genres,
+            "movies": movies,
+            "selected": genre
+        }
+    )
+
+
+if __name__ == "__main__":
+    app_run(
+        "app:app",          # change app if filename is different
+        host=APP_HOST,
+        port=APP_PORT,
+        reload=True
+    )

@@ -9,4 +9,6 @@ certifi
 pyyaml
 nltk
 streamlit
+fastapi
+jinja2
 -e .

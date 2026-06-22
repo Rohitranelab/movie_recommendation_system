@@ -8,4 +8,5 @@ dill
 certifi
 pyyaml
 nltk
+streamlit
 -e .

@@ -1,96 +1,66 @@
+import os
 import sys
+import pickle
+import requests
+import pandas as pd
+
 from src.exception import MyException
 from src.logger import logging
+from src.constants import MODEL_BUCKET_NAME, MODEL_BUCKET_MOVIE_NAME, MODEL_BUCKET_SIMILARITY_NAME
 
-from src.components.data_ingestion import DataIngestion
-from src.components.data_validation import DataValidation
-from src.components.data_transformation import DataTransformation
-from src.components.model_trainer import ModelTrainer
-
-from src.entity.config_entity import (DataIngestionConfig,
-                                      DataValidationConfig,
-                                      DataTransformationConfig,
-                                      ModelTrainerConfig)
-
-from src.entity.artifact_entity import (DataIngestionArtifact,
-                                        DataValidationArtifact,
-                                        DataTransformationArtifact,
-                                        ModelTrainerArtifact)
-
-class TrainPipeline:
+class PredictionPipeline:
     def __init__(self):
-        self.data_ingestion_config = DataIngestionConfig()
-        self.data_validation_config = DataValidationConfig()
-        self.data_transformation_config = DataTransformationConfig()
-        self.model_trainer_config = ModelTrainerConfig()
+        try:
+            movie_path = os.path.join(MODEL_BUCKET_NAME, MODEL_BUCKET_MOVIE_NAME)
+            similarity_path = os.path.join(MODEL_BUCKET_NAME, MODEL_BUCKET_SIMILARITY_NAME)
+            logging.info("Loading movies.pkl")
+            with open(movie_path, "rb") as f:
+                self.movies = pickle.load(f)
+            logging.info("Loading similarity.pkl")
+            with open(similarity_path, "rb") as f:
+                self.similarity = pickle.load(f)
 
-    def start_data_ingestion(self) -> DataIngestionArtifact:
-        '''
-        This method of TrainPipeline class is responsible for starting data ingestion component
-        '''
-        try:
-            logging.info('Entered the start_data_ingestion method of TrainPipeline class')
-            logging.info('Getting the data from MongoDB')
-            data_ingestion = DataIngestion(data_ingestion_config = self.data_ingestion_config)
-            data_ingestion_artifact = data_ingestion.initiate_data_ingestion()
-            logging.info(f'Got the movies and credits data from MongoDB')
-            return data_ingestion_artifact
-        except Exception as e:
-            raise MyException(e, sys)
-        
-    def start_data_validation(self, data_ingestion_artifact: DataIngestionArtifact) -> DataValidationArtifact:
-        '''
-        This method of TrainPipeline class is responsible for starting data validation component
-        '''
-        try:
-            data_validation = DataValidation(data_ingestion_artifact = data_ingestion_artifact,
-                                             data_validation_config = self.data_validation_config)
-            data_validation_artifact = data_validation.initiate_data_validation()
-            logging.info(f'Performed the data validation operation')
-            logging.info('Exited the start_data_validation method of TrainPipeline class')
-            return data_validation_artifact
         except Exception as e:
             raise MyException(e, sys)
 
-    def start_data_transformation(self, data_ingestion_artifact: DataIngestionArtifact, 
-                                  data_validation_artifact: DataValidationArtifact) -> DataTransformationArtifact:
-        '''
-        This method of TrainPipeline class is responsible for starting data transformation component
-        '''
+    # Recommend using Movie Name
+    def recommend_movie(self, movie_name, n=10):
         try:
-            data_transformation = DataTransformation(data_transformation_config = self.data_transformation_config,
-                                                     data_ingestion_artifact = data_ingestion_artifact,
-                                                     data_validation_artifact = data_validation_artifact)
-            data_validation_artifact = data_transformation.initiate_data_transformation()
-            logging.info(f'Performed the data transformation operation')
-            logging.info(f'Exited the start_data_transformation method of TrainPipeline class')
-            return data_validation_artifact
-        except Exception as e:
-            raise MyException(e, sys)
-        
-    def start_model_trainer(self, data_transformation_artifact: DataTransformationArtifact) -> ModelTrainerArtifact:
-        '''
-        This method of TrainPipeline class is responsible for starting model trainer component
-        '''
-        try:
-            model_trainer = ModelTrainer(data_transformation_artifact = data_transformation_artifact, 
-                                         model_trainer_config = self.model_trainer_config)
-            model_trainer_artifact = model_trainer.initiate_model_trainer()
-            logging.info(f'Performed the model trainer operation')
-            logging.info(f'Exited the start_model_trainer method of TrainPipeline class')
-            return model_trainer_artifact
+            movie_index = self.movies[self.movies["title"] == movie_name].index[0]
+            distances = list(enumerate(self.similarity[movie_index]))
+            distances = sorted(distances, reverse=True, key=lambda x: x[1])
+            recommendations = []
+            for i in distances[1:n+1]:
+                recommendations.append(
+                    self.movies.iloc[i[0]].title
+                )
+            return recommendations
+
         except Exception as e:
             raise MyException(e, sys)
 
-    def run_pipeline(self, ) -> None:
-        '''
-        This method of TrainPipeline class is responsible for running complelte pipeline
-        '''
+    # Recommend using Genre
+    def recommend_by_genre(self, genre, n=10):
         try:
-            data_ingestion_artifact = self.start_data_ingestion()
-            data_validation_artifact = self.start_data_validation(data_ingestion_artifact = data_ingestion_artifact)
-            data_transformation_artifact = self.start_data_transformation(data_ingestion_artifact = data_ingestion_artifact,
-                                                                          data_validation_artifact = data_validation_artifact)
-            model_trainer_artifact = self.start_model_trainer(data_transformation_artifact = data_transformation_artifact)
+            df = self.movies.copy()
+            genre_movies = df[df["genres"].apply(lambda x: genre in x)]
+            genre_movies = genre_movies.sort_values("vote_average", ascending=False)
+            return genre_movies[["movie_id", "title", "vote_average"]].head(n)
+
+        except Exception as e:
+            raise MyException(e, sys)
+    
+    def fetch_poster(self, movie_id):
+        try:
+            api_key = os.getenv("TMDB_API_KEY")   
+            url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}&language=en-US"
+            response = requests.get(url)
+            data = response.json()
+            poster_path = data.get("poster_path")
+            if poster_path:
+                return f"https://image.tmdb.org/t/p/w500{poster_path}"
+            else:
+                return "https://via.placeholder.com/500x750?text=No+Poster"
+
         except Exception as e:
             raise MyException(e, sys)

@@ -42,13 +42,16 @@ class ModelTrainer:
             with open(similarity_dir, "wb") as f:
                 pickle.dump(similarity, f)
 
-            logging.info(f'Saving vectorize.pkl')
-            vectorizer_dir = self.model_trainer_config.vectorize_model_path
+            logging.info(f'Saving count_vectorizer.pkl')
+            vectorizer_dir = self.model_trainer_config.vectorizer_model_path
             with open(vectorizer_dir, "wb") as f:
                 pickle.dump(cv, f)
             
-            return ModelTrainerArtifact(similarity_model_file_path = similarity_dir,
-                                        movies_file_path = movies_dir,
-                                        vectorizer_file_path = vectorizer_dir)
+            return ModelTrainerArtifact(
+                movies_model_path=movies_dir,
+                similarity_model_path=similarity_dir,
+                vectorizer_model_path=vectorizer_dir
+            )    
+               
         except Exception as e:
             raise MyException(e, sys)

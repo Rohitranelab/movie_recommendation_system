@@ -19,8 +19,15 @@
 #     logging.info(e)
 #     raise MyException(e, sys) from e
 
+# import pickle
+# 
+# with open("movie-recommendation/movies.pkl", "rb") as f:
+#     movies = pickle.load(f)
+# 
+# print(type(movies))
+# print(movies.head())
 
-from src.pipeline.prediction_pipeline import TrainPipeline
+from src.pipeline.training_pipeline import TrainPipeline
 
 pipeline = TrainPipeline()
 pipeline.run_pipeline()

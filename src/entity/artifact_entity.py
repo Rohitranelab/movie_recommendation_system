@@ -36,9 +36,9 @@ class DataTransformationArtifact:
 
 @dataclass
 class ModelTrainerArtifact:
-    similarity_model_file_path: str
-    movies_file_path: str
-    vectorizer_file_path: str
+    movies_model_path: str
+    similarity_model_path: str
+    vectorizer_model_path: str
 
 
 # ======================================================
@@ -48,8 +48,9 @@ class ModelTrainerArtifact:
 @dataclass
 class ModelEvaluationArtifact:
     is_model_accepted: bool
-    similarity_model_path: str
     movies_model_path: str
+    similarity_model_path: str
+    vectorizer_model_path: str
 
 
 # ======================================================
@@ -58,6 +59,6 @@ class ModelEvaluationArtifact:
 
 @dataclass
 class ModelPusherArtifact:
-    bucket_name: str
-    similarity_model_path: str
     movies_model_path: str
+    similarity_model_path: str
+    vectorizer_model_path: str

@@ -67,7 +67,7 @@ class ModelTrainerConfig:
     trained_model_dir = os.path.join(model_trainer_dir, MODEL_TRAINER_TRAINED_MODEL_DIR)
     similarity_model_path = os.path.join(trained_model_dir, SIMILARITY_PKL_FILE_NAME)
     movies_model_path = os.path.join(trained_model_dir, MOVIES_PKL_FILE_NAME)
-    vectorize_model_path = os.path.join(trained_model_dir, VECTORIZER_PKL_FILE_NAME)
+    vectorizer_model_path = os.path.join(trained_model_dir, VECTORIZER_PKL_FILE_NAME)
 
 
 # =====================================================
@@ -77,9 +77,6 @@ class ModelTrainerConfig:
 @dataclass
 class ModelEvaluationConfig:
     changed_threshold_score = MODEL_EVALUATION_CHANGED_THRESHOLD_SCORE
-    bucket_name = MODEL_BUCKET_NAME
-    similarity_model_key = SIMILARITY_PKL_FILE_NAME
-    movies_model_key = MOVIES_PKL_FILE_NAME
 
 
 # =====================================================
@@ -89,8 +86,9 @@ class ModelEvaluationConfig:
 @dataclass
 class ModelPusherConfig:
     bucket_name = MODEL_BUCKET_NAME
-    similarity_model_key = SIMILARITY_PKL_FILE_NAME
-    movies_model_key = MOVIES_PKL_FILE_NAME
+    movies_model_path = os.path.join(bucket_name, MODEL_BUCKET_MOVIE_NAME)
+    similarity_model_path = os.path.join(bucket_name, MODEL_BUCKET_SIMILARITY_NAME)
+    vectorizer_model_path = os.path.join(bucket_name, MODEL_BUCKET_VECTORIZER_NAME)
 
 
 # =====================================================

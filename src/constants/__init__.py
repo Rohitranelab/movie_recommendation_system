@@ -72,6 +72,9 @@ MODEL_EVALUATION_CHANGED_THRESHOLD_SCORE = 0.02
 # ===========================
 
 MODEL_BUCKET_NAME = "movie-recommendation"
+MODEL_BUCKET_MOVIE_NAME = 'movies.pkl'
+MODEL_BUCKET_SIMILARITY_NAME = 'similarity.pkl'
+MODEL_BUCKET_VECTORIZER_NAME = 'count_vectorizer.pkl'
 
 # ===========================
 # API

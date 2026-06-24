@@ -11,20 +11,35 @@ from src.constants import MODEL_BUCKET_NAME, MODEL_BUCKET_MOVIE_NAME, MODEL_BUCK
 class PredictionPipeline:
     def __init__(self):
         try:
-            movie_path = os.path.join(MODEL_BUCKET_NAME, MODEL_BUCKET_MOVIE_NAME)
-            similarity_path = os.path.join(MODEL_BUCKET_NAME, MODEL_BUCKET_SIMILARITY_NAME)
-            logging.info("Loading movies.pkl")
-            with open(movie_path, "rb") as f:
-                self.movies = pickle.load(f)
-            logging.info("Loading similarity.pkl")
-            with open(similarity_path, "rb") as f:
-                self.similarity = pickle.load(f)
+            self.movies = None
+            self.similarity = None
+            self.load_pickle_files()
 
         except Exception as e:
             raise MyException(e, sys)
 
-    # Recommend using Movie Name
+    def load_pickle_files(self):
+        """Load pickle files from the model bucket"""
+        try:
+            movie_path = os.path.join(MODEL_BUCKET_NAME, MODEL_BUCKET_MOVIE_NAME)
+            similarity_path = os.path.join(MODEL_BUCKET_NAME, MODEL_BUCKET_SIMILARITY_NAME)
+            
+            logging.info(f"Loading movies.pkl from {movie_path}")
+            with open(movie_path, "rb") as f:
+                self.movies = pickle.load(f)
+            
+            logging.info(f"Loading similarity.pkl from {similarity_path}")
+            with open(similarity_path, "rb") as f:
+                self.similarity = pickle.load(f)
+            
+            logging.info("Pickle files loaded successfully")
+
+        except Exception as e:
+            logging.error(f"Error loading pickle files: {e}")
+            raise MyException(e, sys)
+
     def recommend_movie(self, movie_name, n=10):
+        """Recommend using Movie Name"""
         try:
             movie_index = self.movies[self.movies["title"] == movie_name].index[0]
             distances = list(enumerate(self.similarity[movie_index]))
@@ -39,8 +54,8 @@ class PredictionPipeline:
         except Exception as e:
             raise MyException(e, sys)
 
-    # Recommend using Genre
     def recommend_by_genre(self, genre, n=10):
+        """Recommend using Genre"""
         try:
             df = self.movies.copy()
             genre_movies = df[df["genres"].apply(lambda x: genre in x)]
@@ -49,10 +64,11 @@ class PredictionPipeline:
 
         except Exception as e:
             raise MyException(e, sys)
-    
+
     def fetch_poster(self, movie_id):
+        """Fetch movie poster from TMDB API"""
         try:
-            api_key = os.getenv("TMDB_API_KEY")   
+            api_key = os.getenv("TMDB_API_KEY")
             url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}&language=en-US"
             response = requests.get(url)
             data = response.json()

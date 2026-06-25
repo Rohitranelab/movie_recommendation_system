@@ -2,13 +2,13 @@
 
 <p align="center">
 
-[![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-Production-green?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Database-brightgreen?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/)
-[![Scikit Learn](https://img.shields.io/badge/Scikit--Learn-ML-orange?style=for-the-badge&logo=scikit-learn)](https://scikit-learn.org/)
-[![GitHub Actions](https://img.shields.io/badge/GitHub-Actions-black?style=for-the-badge&logo=github)](https://github.com/features/actions)
-[![Render](https://img.shields.io/badge/Render-Deployed-purple?style=for-the-badge&logo=render)](https://render.com/)
-[![MLOps](https://img.shields.io/badge/MLOps-End%20to%20End-red?style=for-the-badge)](https://en.wikipedia.org/wiki/MLOps)
+<img src="https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python" alt="Python">
+<img src="https://img.shields.io/badge/FastAPI-Production-green?style=for-the-badge&logo=fastapi" alt="FastAPI">
+<img src="https://img.shields.io/badge/MongoDB-Database-brightgreen?style=for-the-badge&logo=mongodb" alt="MongoDB">
+<img src="https://img.shields.io/badge/Scikit--Learn-ML-orange?style=for-the-badge&logo=scikit-learn" alt="Scikit-Learn">
+<img src="https://img.shields.io/badge/GitHub-Actions-black?style=for-the-badge&logo=github" alt="GitHub Actions">
+<img src="https://img.shields.io/badge/Render-Deployed-purple?style=for-the-badge&logo=render" alt="Render">
+<img src="https://img.shields.io/badge/MLOps-End%20to%20End-red?style=for-the-badge" alt="MLOps">
 
 </p>
 

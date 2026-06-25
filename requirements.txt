@@ -3,19 +3,20 @@ pandas==2.2.2
 scikit-learn
 scipy
 requests
+
 pymongo
 certifi
-matplotlib
-seaborn
+
 nltk
 PyYAML
 dill
 from_root
 python-dotenv
-ipykernel
+
 fastapi==0.110.0
 uvicorn==0.27.1
 starlette==0.36.3
 jinja2==3.1.3
 python-multipart
-# -e .
+
+-e .

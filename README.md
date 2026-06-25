@@ -2,12 +2,13 @@
 
 <p align="center">
 
-![Python](https://img.shields.io/badge/Python-3.11-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-API-green)
-![MongoDB](https://img.shields.io/badge/MongoDB-Database-brightgreen)
-![Scikit Learn](https://img.shields.io/badge/Scikit--Learn-ML-orange)
-![GitHub Actions](https://img.shields.io/badge/GitHub-Actions-black)
-![Render](https://img.shields.io/badge/Render-Deployed-purple)
+[![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Production-green?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Database-brightgreen?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/)
+[![Scikit Learn](https://img.shields.io/badge/Scikit--Learn-ML-orange?style=for-the-badge&logo=scikit-learn)](https://scikit-learn.org/)
+[![GitHub Actions](https://img.shields.io/badge/GitHub-Actions-black?style=for-the-badge&logo=github)](https://github.com/features/actions)
+[![Render](https://img.shields.io/badge/Render-Deployed-purple?style=for-the-badge&logo=render)](https://render.com/)
+[![MLOps](https://img.shields.io/badge/MLOps-End%20to%20End-red?style=for-the-badge)](https://en.wikipedia.org/wiki/MLOps)
 
 </p>
 
